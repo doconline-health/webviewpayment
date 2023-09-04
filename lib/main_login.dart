@@ -1,83 +1,22 @@
 import 'dart:math';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:multi_webview_tab_manager/main_ios.dart';
-import 'package:multi_webview_tab_manager/main_login.dart';
-
-import 'package:permission_handler/permission_handler.dart';
-
-import 'custom_image.dart';
-import 'webview_tab.dart';
+import 'package:multi_webview_tab_manager/custom_image.dart';
+import 'package:multi_webview_tab_manager/webview_tab.dart';
 
 List<WebViewTab> webViewTabs = [];
 int currentTabIndex = 0;
 // const kHomeUrl = 'https://demo.doconline.com/aes-user-register?q=mKDIRuFDm9nlq1xPiGzm4LgxV3X7cMWX1dyAubOsXa5DglQj46aWRKyji9S2N3xcXohVIayCVXIcIUz8%2B2Cy8J%2BGax3D%2FEjsu4bQr15Zt00nMdTxuRNvRN6KO%2BdAixEYg1mgtwD2BvFOP9yRH9iKWr6oSZsMVVx%2FXznghXTgjY2TUUFXrVaCk91xAtEIGVvwHHA7FeldT%2FoalWPUmndcRvTAG63gXTmM2mIB5GZTMIkslS31RL1Vh%2FYrftXQiWKFIprXVAcuBrg3ugWPOWBA%2BtrEifwx6QkC2PxLBIVWuzRHDuMlioEY%2FUeQTEjsQpCxgZe%2FfAzVh8PScZMvYu42K4BxE91vWA2YlFcTWKlUajs%3D';
 const kHomeUrl = 'https://demo.doconline.com/user/login';
 
-Future main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Permission.camera.request();
-  await Permission.microphone.request();
-
-
-  if (!kIsWeb &&
-      kDebugMode &&
-      defaultTargetPlatform == TargetPlatform.android) {
-    await InAppWebViewController.setWebContentsDebuggingEnabled(kDebugMode);
-  }
-  runApp(const MaterialApp(home: RunMainLogin()));
-
-}
-
-class RunMainLogin extends StatelessWidget {
-  const RunMainLogin({super.key});
+class MainLogin extends StatefulWidget{
+  const MainLogin({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          children: [
-            ElevatedButton(
-                onPressed: () {
-                  /*Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const MainLogin())
-                  );*/
-                  if(defaultTargetPlatform == TargetPlatform.android){
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content: Text("Android"),
-                    ));
-                  }else if(defaultTargetPlatform == TargetPlatform.iOS){
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content: Text("IOS"),
-                    ));
-                  }
-                },
-                child: const Text('Goto Android')),
-            ElevatedButton(
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const MainIos())
-                  );
-                },
-                child: const Text('Goto IOS')),
-          ],
-        ),
-      ),
-    );
-  }
+  State<MainLogin> createState() => _MainLogin();
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
+class _MainLogin extends State<MainLogin> {
   bool showWebViewTabsViewer = false;
 
   @override
@@ -159,25 +98,25 @@ class _MyAppState extends State<MyApp> {
             children: [
               webViewTabs[currentTabIndex].isSecure != null
                   ? Icon(
-                      webViewTabs[currentTabIndex].isSecure == true
-                          ? Icons.lock
-                          : Icons.lock_open,
-                      color: webViewTabs[currentTabIndex].isSecure == true
-                          ? Colors.green
-                          : Colors.red,
-                      size: 12)
+                  webViewTabs[currentTabIndex].isSecure == true
+                      ? Icons.lock
+                      : Icons.lock_open,
+                  color: webViewTabs[currentTabIndex].isSecure == true
+                      ? Colors.green
+                      : Colors.red,
+                  size: 12)
                   : Container(),
               const SizedBox(
                 width: 5,
               ),
               Flexible(
                   child: Text(
-                webViewTabs[currentTabIndex].currentUrl ??
-                    webViewTabs[currentTabIndex].url ??
-                    '',
-                style: const TextStyle(fontSize: 12, color: Colors.white70),
-                overflow: TextOverflow.fade,
-              )),
+                    webViewTabs[currentTabIndex].currentUrl ??
+                        webViewTabs[currentTabIndex].url ??
+                        '',
+                    style: const TextStyle(fontSize: 12, color: Colors.white70),
+                    overflow: TextOverflow.fade,
+                  )),
             ],
           )
         ],
@@ -208,12 +147,12 @@ class _MyAppState extends State<MyApp> {
           constraints: const BoxConstraints(minWidth: 25.0),
           child: Center(
               child: Text(
-            webViewTabs.length.toString(),
-            style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 14.0),
-          )),
+                webViewTabs.length.toString(),
+                style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14.0),
+              )),
         ),
       ),
     ];
@@ -253,10 +192,10 @@ class _MyAppState extends State<MyApp> {
         shape: RoundedRectangleBorder(
             side: currentTabIndex == webViewIndex
                 ? const BorderSide(
-                    // border color
-                    color: Colors.black,
-                    // border thickness
-                    width: 2)
+              // border color
+                color: Colors.black,
+                // border thickness
+                width: 2)
                 : BorderSide.none,
             borderRadius: const BorderRadius.all(
               Radius.circular(5),
@@ -279,16 +218,16 @@ class _MyAppState extends State<MyApp> {
                     padding: const EdgeInsets.only(right: 10),
                     child: favicon != null
                         ? CustomImage(
-                            url: favicon.url, maxWidth: 20.0, height: 20.0)
+                        url: favicon.url, maxWidth: 20.0, height: 20.0)
                         : null,
                   ),
                   Expanded(
                       child: Text(
-                    webViewTab.title ?? '',
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(fontSize: 12),
-                  ))
+                        webViewTab.title ?? '',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(fontSize: 12),
+                      ))
                 ]),
                 trailing: IconButton(
                     onPressed: () {
@@ -301,15 +240,15 @@ class _MyAppState extends State<MyApp> {
               ),
               Expanded(
                   child: Ink(
-                decoration: screenshotData != null
-                    ? BoxDecoration(
+                    decoration: screenshotData != null
+                        ? BoxDecoration(
                         image: DecorationImage(
-                        image: MemoryImage(screenshotData),
-                        fit: BoxFit.fitWidth,
-                        alignment: Alignment.topCenter,
-                      ))
-                    : null,
-              ))
+                          image: MemoryImage(screenshotData),
+                          fit: BoxFit.fitWidth,
+                          alignment: Alignment.topCenter,
+                        ))
+                        : null,
+                  ))
             ],
           ),
         ));
