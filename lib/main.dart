@@ -4,15 +4,21 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
+import 'package:permission_handler/permission_handler.dart';
+
 import 'custom_image.dart';
 import 'webview_tab.dart';
 
 List<WebViewTab> webViewTabs = [];
 int currentTabIndex = 0;
-const kHomeUrl = 'https://demo.doconline.com/aes-user-register?q=mKDIRuFDm9nlq1xPiGzm4LgxV3X7cMWX1dyAubOsXa5DglQj46aWRKyji9S2N3xcXohVIayCVXIcIUz8%2B2Cy8J%2BGax3D%2FEjsu4bQr15Zt00nMdTxuRNvRN6KO%2BdAixEYg1mgtwD2BvFOP9yRH9iKWr6oSZsMVVx%2FXznghXTgjY2TUUFXrVaCk91xAtEIGVvwHHA7FeldT%2FoalWPUmndcRvTAG63gXTmM2mIB5GZTMIkslS31RL1Vh%2FYrftXQiWKFIprXVAcuBrg3ugWPOWBA%2BtrEifwx6QkC2PxLBIVWuzRHDuMlioEY%2FUeQTEjsQpCxgZe%2FfAzVh8PScZMvYu42K4BxE91vWA2YlFcTWKlUajs%3D';
-
+// const kHomeUrl = 'https://demo.doconline.com/aes-user-register?q=mKDIRuFDm9nlq1xPiGzm4LgxV3X7cMWX1dyAubOsXa5DglQj46aWRKyji9S2N3xcXohVIayCVXIcIUz8%2B2Cy8J%2BGax3D%2FEjsu4bQr15Zt00nMdTxuRNvRN6KO%2BdAixEYg1mgtwD2BvFOP9yRH9iKWr6oSZsMVVx%2FXznghXTgjY2TUUFXrVaCk91xAtEIGVvwHHA7FeldT%2FoalWPUmndcRvTAG63gXTmM2mIB5GZTMIkslS31RL1Vh%2FYrftXQiWKFIprXVAcuBrg3ugWPOWBA%2BtrEifwx6QkC2PxLBIVWuzRHDuMlioEY%2FUeQTEjsQpCxgZe%2FfAzVh8PScZMvYu42K4BxE91vWA2YlFcTWKlUajs%3D';
+const kHomeUrl = 'https://demo.doconline.com/user/login';
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Permission.camera.request();
+  await Permission.microphone.request();
+
+
   if (!kIsWeb &&
       kDebugMode &&
       defaultTargetPlatform == TargetPlatform.android) {

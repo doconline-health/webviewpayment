@@ -153,6 +153,11 @@ class _WebViewTabState extends State<WebViewTab> with WidgetsBindingObserver {
                   await controller.startSafeBrowsing();
                 }
               },
+                // ignore: deprecated_member_use
+                androidOnPermissionRequest: (InAppWebViewController controller, String origin, List<String> resources) async {
+                  // ignore: deprecated_member_use
+                  return PermissionRequestResponse(resources: resources, action: PermissionRequestResponseAction.GRANT);
+                },
               onLoadStart: (controller, url) {
                 _favicon = null;
                 _title = '';
